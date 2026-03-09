@@ -39,7 +39,7 @@
         background-attachment: fixed;
         background-size: cover;
         color: #1d1d1f; 
-        min-height: 100vh;
+        min-height: 100dvh;
       }
       
       /* Efeitos Glassmorphism (Liquid Glass) */
@@ -92,22 +92,24 @@
 
       .truncate-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
-      /* Mobile vs Desktop app wrapper */
-      .app-wrapper {
-        @apply flex-1 flex flex-col w-full max-w-md mx-auto relative h-full;
-      }
-      @media (min-width: 640px) {
-        .app-wrapper {
-          height: 90vh !important;
-          margin-top: auto;
-          margin-bottom: auto;
-          border-radius: 2.5rem;
-          overflow: hidden;
+      /* Ajustes Responsivos & Notches (iPhone) */
+      .pt-safe { padding-top: max(1rem, env(safe-area-inset-top)) !important; }
+      .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)) !important; }
+
+      /* Estilos Móveis Nativos (Ocultar bordas do vidro nas margens do ecrã) */
+      @media (max-width: 639px) {
+        .glass-panel {
+          border: none !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+        .fab-btn {
+          bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
         }
       }
     </style>
   </head>
-  <body class="antialiased h-screen flex flex-col overflow-hidden sm:p-4">
+  <body class="antialiased h-[100dvh] w-full flex flex-col overflow-hidden sm:p-4">
 
     <!-- LOADER -->
     <div id="loading-section" class="fixed inset-0 z-[99999] flex items-center justify-center bg-white/50 backdrop-blur-xl transition-opacity duration-300">
@@ -122,8 +124,8 @@
         </div>
         <h1 class="text-2xl font-bold text-gray-900 mb-6 tracking-tight">Fila Chat</h1>
         <div id="login-form">
-          <input type="email" id="loginEmail" placeholder="E-mail" class="glass-input rounded-xl px-4 py-3 mb-4 w-full transition-all" />
-          <input type="password" id="loginPassword" placeholder="Palavra-passe" class="glass-input rounded-xl px-4 py-3 mb-6 w-full transition-all" />
+          <input type="email" id="loginEmail" placeholder="E-mail" class="glass-input rounded-xl px-4 py-3 mb-4 w-full transition-all text-[16px]" />
+          <input type="password" id="loginPassword" placeholder="Palavra-passe" class="glass-input rounded-xl px-4 py-3 mb-6 w-full transition-all text-[16px]" />
           <button type="button" id="login-btn" class="w-full glass-button text-white font-semibold py-3.5 rounded-xl transition-all">Iniciar Sessão</button>
         </div>
         <p class="mt-5 text-sm text-gray-700 font-medium">Use a conta da Fila Virtual.</p>
@@ -131,9 +133,10 @@
     </div>
 
     <!-- ECRÃ PRINCIPAL (LISTA DE CONVERSAS) -->
-    <div id="home-screen" style="display: none;" class="app-wrapper glass-panel">
+    <!-- Classes base e responsivas aplicadas diretamente na DIV -->
+    <div id="home-screen" style="display: none;" class="glass-panel flex-1 flex flex-col w-full sm:max-w-md mx-auto relative h-full sm:h-[90dvh] sm:my-auto sm:rounded-[2.5rem] sm:overflow-hidden">
       <!-- Cabeçalho -->
-      <header class="glass-header text-apple-dark p-4 flex justify-between items-center z-10 pt-safe">
+      <header class="glass-header shrink-0 text-apple-dark p-4 flex justify-between items-center z-10 pt-safe">
         <h1 class="text-xl font-bold tracking-tight">Mensagens</h1>
         <div class="flex gap-4 items-center">
           <button id="logout-btn" title="Terminar Sessão" class="text-apple-dark hover:text-apple-blue transition-colors p-1">
@@ -148,14 +151,14 @@
       </div>
 
       <!-- FAB (Nova Conversa) -->
-      <button id="new-chat-btn" class="absolute bottom-6 right-6 glass-button text-white p-4 rounded-full transition-transform active:scale-90 z-10 flex items-center justify-center">
+      <button id="new-chat-btn" class="fab-btn absolute bottom-6 right-6 glass-button text-white p-4 rounded-full transition-transform active:scale-90 z-10 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
       </button>
     </div>
 
     <!-- ECRÃ DE CONTACTOS -->
-    <div id="contacts-screen" style="display: none;" class="app-wrapper glass-panel">
-      <header class="glass-header text-apple-dark p-4 flex items-center z-10 pt-safe">
+    <div id="contacts-screen" style="display: none;" class="glass-panel flex-1 flex flex-col w-full sm:max-w-md mx-auto relative h-full sm:h-[90dvh] sm:my-auto sm:rounded-[2.5rem] sm:overflow-hidden">
+      <header class="glass-header shrink-0 text-apple-dark p-4 flex items-center z-10 pt-safe">
         <button id="back-from-contacts-btn" class="mr-3 text-apple-blue hover:bg-white/30 p-2 rounded-full transition-colors -ml-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
@@ -166,10 +169,10 @@
       </header>
 
       <!-- Nova Barra de Pesquisa -->
-      <div class="glass-header px-4 pb-3 pt-2 z-10 relative border-t-0">
+      <div class="glass-header shrink-0 px-4 pb-3 pt-2 z-10 relative border-t-0">
         <div class="relative">
           <svg class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          <input type="text" id="contact-search-input" placeholder="Pesquisar contacto..." class="glass-input w-full rounded-xl py-2 pl-10 pr-4 outline-none text-[14px] placeholder-gray-500 transition-all">
+          <input type="text" id="contact-search-input" placeholder="Pesquisar contacto..." class="glass-input w-full rounded-xl py-2 pl-10 pr-4 outline-none text-[16px] placeholder-gray-500 transition-all">
         </div>
       </div>
 
@@ -179,9 +182,9 @@
     </div>
 
     <!-- ECRÃ DE CONVERSA ATIVA -->
-    <div id="active-chat-screen" style="display: none;" class="app-wrapper glass-panel">
+    <div id="active-chat-screen" style="display: none;" class="glass-panel flex-1 flex flex-col w-full sm:max-w-md mx-auto relative h-full sm:h-[90dvh] sm:my-auto sm:rounded-[2.5rem] sm:overflow-hidden">
       <!-- Cabeçalho da Conversa -->
-      <header class="glass-header text-apple-dark p-3 flex items-center z-10 pt-safe cursor-pointer">
+      <header class="glass-header shrink-0 text-apple-dark p-3 flex items-center z-10 pt-safe cursor-pointer">
         <button id="back-to-home-btn" class="mr-1 text-apple-blue hover:bg-white/30 p-2 rounded-full transition-colors -ml-1 flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
@@ -200,8 +203,8 @@
       </div>
 
       <!-- Área de Introdução de Texto -->
-      <div class="glass-header p-3 flex items-center gap-2 z-10 pb-safe">
-        <input type="text" id="message-input" placeholder="Mensagem do iMessage..." class="glass-input flex-1 rounded-full py-2.5 px-5 outline-none text-[15px] placeholder-gray-500 transition-all" autocomplete="off" />
+      <div class="glass-header shrink-0 p-3 flex items-center gap-2 z-10 pb-safe">
+        <input type="text" id="message-input" placeholder="Mensagem do iMessage..." class="glass-input flex-1 rounded-full py-2.5 px-5 outline-none text-[16px] placeholder-gray-500 transition-all" autocomplete="off" />
         <button id="send-msg-btn" class="bg-apple-blue/90 backdrop-blur-md border border-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-apple-blue transition-transform active:scale-90 shadow-sm shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
         </button>
